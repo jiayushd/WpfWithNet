@@ -1,0 +1,226 @@
+﻿<Window x:Class="WpfWithNet.SubWindow.FirstVirsion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+        mc:Ignorable="d"
+    Title="数据查询" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="100" />
+            <RowDefinition />
+            <RowDefinition
+                Height="40" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Label
+                Content="选择日期"
+                FontSize="14"
+                Foreground="Blue" />
+            <Border
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1" />
+            <WrapPanel VerticalAlignment="Center"
+                Margin="15,0">
+                <Label
+                    Content="起始日期：" />
+                <DatePicker
+                    x:Name="dpStartDate" />
+                <Label
+                    Content="结束日期："
+                    Margin="30,0,0,0" />
+                <DatePicker
+                    x:Name="dpEndDate" />
+            <Button
+                x:Name="btnCalculate"
+                Content="初稿查询"
+                Width="60"
+                HorizontalAlignment="Right" 
+                Margin="40,0,0,0" 
+                Click="btnCalculate_Click"/>
+                <Button
+                    x:Name="btnQueryDone"
+                    Content="提交查询"
+                    Width="60"
+                    HorizontalAlignment="Right"
+                    Margin="40,0,0,0"
+                    Click="btnQueryDone_Click" />
+                <Button
+                    x:Name="btnGroupFirstVirsion"
+                    Content="部门初稿"
+                    Width="60"
+                    HorizontalAlignment="Right"
+                    Margin="40,0,0,0"
+                    Click="btnGroupFirstVirsion_Click" />
+                <Button
+                    x:Name="btnGroupDone"
+                    Content="部门提交"
+                    Width="60"
+                    HorizontalAlignment="Right"
+                    Margin="40,0,0,0"
+                    Click="btnGroupDone_Click" />
+            </WrapPanel>
+
+
+            <Label
+                Content="查询结果"
+                FontSize="14"
+                Foreground="Blue" />
+            <Border
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1" />
+        </StackPanel>
+        <DataGrid
+            x:Name="Firstdg"
+            Grid.Row="1"
+            AutoGenerateColumns="False">
+            <DataGrid.RowStyle>
+                <Style
+                    TargetType="DataGridRow">
+                    <Setter
+                        Property="Height"
+                        Value="30" />
+                    <Setter
+                        Property="VerticalAlignment"
+                        Value="Center" />
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="我方文号"
+                    Width="120"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 我方文号}" />
+                <DataGridTextColumn
+                    Header="客户名称"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 客户名称}" />
+                <DataGridTextColumn
+                    Header="申请类型"
+                    Width="80"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 申请类型}" />
+                <DataGridTextColumn
+                    Header="任务名称"
+                    Width="80"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 任务名称}" />
+                <DataGridTextColumn
+                    Header="任务属性"
+                    Width="80"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 任务属性}" />
+                <DataGridTextColumn
+                    Header="任务标识"
+                    Width="80"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 任务标识}" />
+                <DataGridTextColumn
+                    Header="承办人"
+                    Width="80"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 承办人}" />
+                <DataGridTextColumn
+                    Header="初稿日"
+                    Width="100"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 初稿日, StringFormat ={}{0:yyyy-MM-dd}}" />
+                <DataGridTextColumn
+                    Header="完成日"
+                    Width="100"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 完成日, StringFormat ={}{0:yyyy-MM-dd}}" />
+                <DataGridTextColumn
+                    Header="权值"
+                    Width="80"
+                    ElementStyle="{StaticResource contentCenterStyle1}"
+                    Binding="{Binding 权值}" />
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Border
+            Grid.Row="2"
+            BorderThickness="0,1,0,0"
+            BorderBrush="Black">
+            <WrapPanel
+                HorizontalAlignment="Center">
+                <Label
+                    Content="总计："
+                    FontSize="20" />
+                <TextBlock
+                    x:Name="tbTotalWeight"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Text="100" />
+            </WrapPanel>
+        </Border>
+
+        <!--<ListView x:Name="lvwFirstVirsionList" 
+            Grid.Row="1"
+            Margin="10,3">
+            <ListView.View>
+                <GridView >
+                    <GridViewColumn
+                        Header="姓名"
+                        Width="60"
+                        DisplayMemberBinding="{Binding Path=代理人}" />
+                    <GridViewColumn
+                        Header="案号"
+                        Width="120"
+                        DisplayMemberBinding="{Binding Path=我方案号}" />
+                    <GridViewColumn
+                        Header="类型"
+                        Width="60"
+                        DisplayMemberBinding="{Binding Path=案件类型}" />
+                    <GridViewColumn
+                        Header="初稿日期"
+                        Width="100"
+                        DisplayMemberBinding="{Binding Path=初稿时间,StringFormat={}{0:yyyy-MM-dd}}" />
+                    <GridViewColumn
+                        Header="提交日期"
+                        Width="100"
+                        DisplayMemberBinding="{Binding Path=提交时间,StringFormat={}{0:yyyy-MM-dd}}" />
+                    <GridViewColumn
+                        Header="权值"
+                        Width="40"
+                        DisplayMemberBinding="{Binding Path=权值}" />
+                    <GridViewColumn
+                        Header="客户"
+                        Width="180"
+                        DisplayMemberBinding="{Binding Path=申请人}" />
+                    <GridViewColumn
+                        Header="状态"
+                        Width="80"
+                        DisplayMemberBinding="{Binding Path=案件状态}" />
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+        <!--<WrapPanel 
+            Grid.Row="2">
+            <Label x:Name="lbFirstVirsionCount"
+                   Content="数量："
+                   Margin="10,0,0,0"/>
+            <TextBlock
+                x:Name="tblkFirstVirsionCount"
+                VerticalAlignment="Center"/>
+            <Label
+                x:Name="lbFirstVirsionWeight"
+                Content="权值：" 
+                />
+            <TextBlock
+                x:Name="tblkFirstVirsionWeight"
+                VerticalAlignment="Center" />
+            <Button
+                Grid.Row="2"
+                x:Name="btnExport"
+                Content="导出"
+                Width="60"
+                Height="25"
+                Margin="550,0,0,0"
+                Click="btnExport_Click" />
+        </WrapPanel>-->
+
+    </Grid>
+</Window>

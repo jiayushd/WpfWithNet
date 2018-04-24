@@ -1,0 +1,1206 @@
+﻿<Window
+x:Class="WpfWithNet.MainWindow"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+xmlns:local="clr-namespace:WpfWithNet"
+mc:Ignorable="d"
+Title="案件助手"
+Height="1000"
+Width="1170"
+MinWidth="1024"
+Loaded="Window_Loaded"
+Closed="Window_Closed"
+AllowDrop="True">
+<Window.Resources>
+<!--定义列表样式-->
+<DataTemplate
+x:Key="list">
+<Border
+BorderBrush="Silver"
+BorderThickness="0,1,0,0">
+<Grid
+Margin="5"
+Width="320">
+<Grid.RowDefinitions>
+<RowDefinition />
+<RowDefinition />
+<RowDefinition />
+<RowDefinition />
+</Grid.RowDefinitions>
+<Grid.ColumnDefinitions>
+<ColumnDefinition
+Width="5" />
+<ColumnDefinition
+Width="10" />
+<ColumnDefinition
+Width="160" />
+<ColumnDefinition
+Width="50" />
+<ColumnDefinition />
+</Grid.ColumnDefinitions>
+
+  
+<!--状态灯-->
+<Label
+x:Name="stateLamp"
+Grid.RowSpan="4"
+Background="{Binding Path=StateColor1,Mode=OneWay}" />
+<Label
+x:Name="imgType"
+Grid.RowSpan="3"
+Grid.Column="1"
+Background="Transparent"
+FontSize="20">
+<Image
+Source="{Binding Path=img,Mode=OneWay}" />
+</Label>
+<!--案件类型-->
+<Border
+Grid.Column="3"
+Grid.ColumnSpan="2">
+<TextBlock
+FontFamily="微软雅黑"
+Foreground="Gray"
+FontSize="10"
+Text="{Binding Path=CaseType,Mode=OneWay}"
+HorizontalAlignment="Right" />
+</Border>
+
+<!--我方案号-->
+<TextBlock
+Grid.Column="2"
+FontFamily="Times New Roman"
+FontSize="18"
+Foreground="Black"
+Text="{Binding Path=AttorneyNum,Mode=OneWay}"
+HorizontalAlignment="Left">
+</TextBlock>
+<!--申请人-->
+<TextBlock
+Grid.Column="2"
+Grid.Row="1"
+Grid.ColumnSpan="2"
+Height="20"
+FontFamily="微软雅黑"
+Text="{Binding Path=Applicant}"
+Foreground="Black">
+</TextBlock>
+<!--交底名称-->
+<TextBlock
+Grid.Column="2"
+Grid.Row="2"
+Grid.ColumnSpan="3"
+Height="16"
+FontFamily="微软雅黑"
+Text="{Binding Path=DocName,Mode=OneWay}"
+VerticalAlignment="Center">
+<!--备注-->
+</TextBlock>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="5"
+                        FontFamily="微软雅黑"
+                        Margin="0,5"
+                        Text="{Binding Path=Infosss,Mode=OneWay}"
+                        TextWrapping="WrapWithOverflow">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush
+                                Color="{DynamicResource {x:Static SystemColors.AppWorkspaceColorKey}}" />
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock
+Grid.Column="4"
+Grid.Row="1"
+FontFamily="times new roman"
+Foreground="White"
+Margin="5"
+Width="50"
+Padding="1"
+Text="{Binding Path=DaysLeft,Mode=OneWay}"
+Background="{Binding Path=DaysColor,Mode=OneWay}"
+FontSize="12" />
+<!--</Border>-->
+
+</Grid>
+</Border>
+</DataTemplate>
+<local:PlainView
+x:Key="tileView"
+x:Name="plainview"
+ItemTemplate="{StaticResource list}" />
+<ToolTip
+x:Key="InforTip">
+<StackPanel
+Orientation="Horizontal">
+<TextBlock
+Text="备注：" />
+
+<TextBlock
+Text="{Binding Path=Infosss}" />
+</StackPanel>
+</ToolTip>
+<Style
+x:Key="InforTipStyle"
+TargetType="{x:Type ListViewItem}">
+<Setter
+Property="ToolTip"
+Value="{Binding Source={StaticResource InforTip}}" />
+</Style>
+</Window.Resources>
+    <Grid
+        x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="80" />
+            <RowDefinition />
+            <RowDefinition
+                Height="40" />
+        </Grid.RowDefinitions>
+        <WebBrowser
+            x:Name="wbHJ"
+            Grid.Row="1"
+            Visibility="Hidden" />
+        <!--定义功能区-->
+        <Border>
+            <Border.Background>
+                <SolidColorBrush
+                    Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}" />
+            </Border.Background>
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+                <Button
+                    x:Name="btnRefresh"
+                    Background="Transparent"
+                    BorderBrush="{x:Null}"
+                    Click="btnRefresh_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_刷新.png"
+                            Width="40" 
+                            Margin="4"/>
+                        <Label
+                            Content="刷 新"
+                            HorizontalAlignment="Center"
+                            Foreground="White" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    x:Name="btnCalculate"
+                    Margin="15,0"
+                    Background="Transparent"
+                    BorderBrush="{x:Null}"
+                    Click="btnCalculate_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_数据查询.png"
+                            Width="48" />
+                        <Label
+                            Content="数据查询"
+                            Foreground="White" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    x:Name="btnEverydayAffair"
+                    Background="Transparent"
+                    BorderBrush="{x:Null}"
+                    Click="btnEverydayAffair_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_闹钟.png"
+                            Margin="4"
+                            Width="40" />
+                        <Label
+                            Content="日常事务"
+                            Foreground="White" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="btnChaneCaseInfo"
+                    Background="Transparent"
+                    BorderBrush="{x:Null}"
+                    Margin="15,0"
+                    Click="btnChaneCaseInfo_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_信息.png"
+                            Width="48" />
+                        <Label
+                            Content="基本信息"
+                            Foreground="White" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="btnEmail"
+                    Background="Transparent"
+                    BorderBrush="{x:Null}"
+                    Click="btnEmail_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_邮件模板.png"
+                            Width="48" />
+                        <Label
+                            Content="邮件模板"
+                            Foreground="White" />
+                    </StackPanel>
+
+                </Button>
+                <Button
+                    x:Name="btnGeneralViewofMembers"
+                    Background="Transparent"
+                    BorderBrush="{x:Null}"
+                    Margin="15,0"
+                    Click="btnGeneralViewofMembers_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_成员概括.png"
+                            Width="48" />
+                        <Label
+                            Content="成员概况"
+                            Foreground="White" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="btnHJ"
+                    Background="Transparent"
+                    BorderBrush="{x:Null}"
+                    Click="btnHJ_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_华进.png"
+                            Width="40"
+                            Margin="4"/>
+                        <Label
+                            Content="华进系统"
+                            Foreground="White" />
+                    </StackPanel>
+                </Button>
+                <Button
+                    x:Name="btnLocal"
+                    Background="Transparent"
+                    Visibility="Collapsed"
+                    BorderBrush="{x:Null}"
+                    Click="btnLocal_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_本地.png"
+                            Width="48" />
+                        <Label
+                            Content="本地系统"
+                            Foreground="White" />
+                    </StackPanel>
+
+                </Button>
+                <Button
+                    x:Name="btnCareer"
+                    Background="Transparent"
+                    
+                    BorderBrush="{x:Null}"
+                    Click="btnCareer_Click">
+                    <StackPanel>
+                        <Image
+                            Source="icon\顶层_白_本地.png"
+                            Width="48" 
+                            Margin="15,0"/>
+                        <Label
+                            Content="生涯数据"
+                            Foreground="White" />
+                    </StackPanel>
+
+                </Button>
+
+            </StackPanel>
+        </Border>
+
+        <Grid
+            Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="170" />
+                <ColumnDefinition
+                    Width="350" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Border
+                BorderBrush="LightGray"
+                BorderThickness="1">
+                <Border.Background>
+                    <SolidColorBrush
+                        Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}" />
+                </Border.Background>
+                <StackPanel
+                    Grid.Column="0">
+                    <RadioButton
+                        x:Name="rbtnCN"
+                        Style="{DynamicResource rbtnStyle1}"
+                        Checked="rbtnCN_Checked"
+                        ToolTip="所有的国内案">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="150">
+                                <Image
+                                    Source="icon\蓝中国.png"
+                                    Style="{DynamicResource imgStyle1}"
+                                    Margin="8,3,10,3"/>
+                                <TextBlock
+                                    x:Name="tbCN"
+                                    Text="国内" VerticalAlignment="Center"/>
+                            </WrapPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnForeign"
+                        
+                        Style="{DynamicResource rbtnStyle1}"
+                        Checked="rbtnForeign_Checked"
+                        ToolTip="涉外案：包括PCT撰写、PCT改写">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝全球.png"
+                                    Style="{DynamicResource imgStyle1}"
+                                    Height="25" Margin="12,3,15,3"
+                                    />
+                                <TextBlock
+                                    x:Name="tbForeign"
+                                    Text="涉外"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnToDo"
+                        Style="{DynamicResource rbtnStyle1}"
+                        Checked="rbtnToDo_Checked"
+                        ToolTip="未出初稿的案件">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝待办.png"
+                                    Style="{DynamicResource imgStyle1}" />
+                                <TextBlock
+                                    x:Name="tbToDo"
+                                    Text="可处理"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnDone"
+                        
+                        Style="{DynamicResource rbtnStyle1}"
+                        Click="rbtnDone_Click"
+                        ToolTip="已出初稿但未完成的案件">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝完成.png"
+                                    Style="{DynamicResource imgStyle1}" />
+                                <TextBlock
+                                    x:Name="tbDone"
+                                    Text="初稿"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnCurrentDone"
+                        
+                        Style="{DynamicResource rbtnStyle1}"
+                        Click="rbtnCurrentDone_Click"
+                        ToolTip="当月已出初稿的案件">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝本月初稿.png"
+                                    Style="{DynamicResource imgStyle1}" />
+                                <TextBlock
+                                    x:Name="tbCurrentDone"
+                                    Text="本月初稿"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnOAtotal"
+                        
+                        Style="{DynamicResource rbtnStyle1}"
+                        Click="rbtnOAtotal_Click"
+                        ToolTip="所有的OA">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝全部.png"
+                                    Style="{DynamicResource imgStyle1}" />
+                                <TextBlock
+                                    x:Name="tbOAtotal"
+                                    Text="全部OA"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnOAin30"
+                        
+                        Style="{DynamicResource rbtnStyle1}"
+                        Click="rbtnOAin30_Click"
+                        ToolTip="未加15天的期限">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝本月.png"
+                                    Style="{DynamicResource imgStyle1}" />
+                                <TextBlock
+                                    x:Name="tbOAin30"
+                                    Text="30天内OA"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnRctAply"
+                        
+                        Style="{DynamicResource rbtnStyle1}"
+                        Checked="rbtnRctAply_Checked"
+                        ToolTip="最近50天内递交的案子">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝提交.png"
+                                    Style="{DynamicResource imgStyle1}" />
+                                <TextBlock
+                                    x:Name="tbRctAply"
+                                    Text="最近提交"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="rbtnCustom"
+                        
+                        Style="{DynamicResource rbtnStyle1}"
+                        ToolTip="搜索结果">
+                        <RadioButton.Content>
+                            <WrapPanel
+                                Width="160">
+                                <Image
+                                    Source="icon\蓝自定义.png"
+                                    Style="{DynamicResource imgStyle1}" />
+                                <TextBlock
+                                    x:Name="tbCustom"
+                                    Text="自定义"
+                                    VerticalAlignment="Center" />
+                            </WrapPanel>
+                        </RadioButton.Content>
+                        
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+            <Border
+                Grid.Column="1">
+                <Grid
+                    x:Name="gridSecondList">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="90" />
+                        <RowDefinition />
+                        <RowDefinition
+                            Height="60" />
+                    </Grid.RowDefinitions>
+                    <StackPanel
+                        Height="auto">
+
+                        <WrapPanel
+                            VerticalAlignment="Center">
+                            <TextBox
+                                x:Name="txtbSearchString"
+                                Height="30"
+                                Margin="8"
+                                VerticalContentAlignment="Center"
+                                Width="250" />
+                            <Button
+                                x:Name="btnSearch"
+                                Height="30"
+                                Width="70"
+                                Click="btnSearch_Click">
+                                <Button.Content>
+                                    <WrapPanel>
+                                        <Image
+                                            Source="icon\搜索.png"
+                                            Width="20" />
+                                        <TextBlock
+                                            Text="搜索"
+                                            VerticalAlignment="Center"
+                                            Margin="5,0" />
+                                    </WrapPanel>
+                                </Button.Content>
+                            </Button>
+                        </WrapPanel>
+                        <Expander
+                            Grid.Row="1"
+                            Header="高级检索"
+                            Expanded="Expander_Expanded"
+                            Collapsed="Expander_Collapsed"
+                            Margin="5">
+                            <StackPanel>
+                                <WrapPanel
+                                    Margin="20,3">
+                                    <TextBlock
+                                        Text="我方案号:"
+                                        Width="55" />
+                                    <TextBox
+                                        x:Name="tbSearchCaseFileID"
+                                        Width="80" />
+                                    <TextBlock
+                                        Text="交底名称:"
+                                        Width="55"
+                                        Margin="5,0,0,0" />
+                                    <TextBox
+                                        x:Name="tbSearchDocName"
+                                        Width="80" />
+                                </WrapPanel>
+                                <WrapPanel
+                                    Margin="20,3">
+                                    <TextBlock
+                                        Text="客户案号:"
+                                        Width="55" />
+                                    <TextBox
+                                        x:Name="tbSearchCustomSN"
+                                        Width="80" />
+                                    <TextBlock
+                                        Text="任务类型:"
+                                        Width="55"
+                                        Margin="5,0,0,0" />
+                                    <TextBox
+                                        x:Name="tbSearchTaskType"
+                                        Width="80" />
+                                </WrapPanel>
+                                <WrapPanel
+                                    Margin="20,3">
+                                    <TextBlock
+                                        Text="申请号:"
+                                        Width="55" />
+                                    <TextBox
+                                        x:Name="tbApplicationNum"
+                                        Width="80" />
+                                    <TextBlock
+                                        Text="代理人:"
+                                        Width="55"
+                                        Margin="5,0,0,0" />
+                                    <TextBox
+                                        x:Name="tbSearchAttorneyID"
+                                        Width="80" />
+                                </WrapPanel>
+                                <WrapPanel
+                                    Margin="20,3">
+                                    <TextBlock
+                                        Text="客户名称:"
+                                        Width="55" />
+                                    <TextBox
+                                        x:Name="tbSearchApplicantTag"
+                                        Width="80" />
+                                    <TextBlock
+                                        Text="当前状态:"
+                                        Width="55"
+                                        Margin="5,0,0,0" />
+                                    <TextBox
+                                        x:Name="tbSearchStatus"
+                                        Width="80" />
+                                </WrapPanel>
+                                <WrapPanel
+                                    Margin="20,3">
+                                    <TextBlock
+                                        Text="备注:"
+                                        Width="55" />
+                                    <TextBox
+                                        x:Name="tbSearchTaskInfo"
+                                        Width="220" />
+                                </WrapPanel>
+                                <WrapPanel
+                                    Margin="20,3"
+                                    FlowDirection="RightToLeft">
+                                    <Button
+                                        x:Name="AdvanceSearch"
+                                        Content="搜索"
+                                        Width="60"
+                                        Click="AdvanceSearch_Click" />
+                                </WrapPanel>
+                                <Border
+                                    BorderBrush="LightGray"
+                                    BorderThickness="0,1,0,0" />
+
+                            </StackPanel>
+
+                        </Expander>
+                    </StackPanel>
+
+                    <ListView
+                        ItemContainerStyle="{StaticResource InforTipStyle}"
+                        x:Name="lvw3"
+                        Grid.Row="1"
+                        SelectionChanged="lvw3_SelectionChanged"
+                        MouseDoubleClick="lvw3_MouseDoubleClick"
+                        Background="Transparent"
+                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                        ScrollViewer.CanContentScroll="True"
+                        BorderBrush="{x:Null}"
+                        >
+
+                    </ListView>
+                    <WrapPanel
+                        Grid.Row="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+
+                        <Button
+                            x:Name="btnPrevious"
+                            Content="上一项"
+                            Click="btnPrevious_Click"
+                            Height="30"
+                            Width="50"
+                            Margin="15,0" />
+                        <Label
+                            x:Name="lbCurrent"
+                            Width="150"
+                            HorizontalContentAlignment="Center" />
+                        <Button
+                            x:Name="btnNext"
+                            Content="下一项"
+                            Click="btnNext_Click"
+                            Width="50"
+                            Margin="15,0" />
+
+                    </WrapPanel>
+                </Grid>
+            </Border>
+            <!--整个第三列-->
+            <Border
+                Grid.Column="2"
+                BorderBrush="LightGray"
+                BorderThickness="1">
+                <Grid
+                    x:Name="gridTaskInfo">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="190" />
+                        <RowDefinition
+                            Height="{Binding ElementName=expdDetails,Path=Height}" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--任务摘要-->
+                    <Border
+                        BorderThickness="0,0,0,0"
+                        BorderBrush="LightGray">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="410" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel
+                                Margin="10" Grid.ColumnSpan="2">
+                                <WrapPanel>
+                                    <TextBlock
+                                        Text="{Binding Path=AttorneyNum}"
+                                        FontSize="25"
+                                        FontFamily="Times New Roman"
+                                        Height="35" />
+                                    <TextBlock                                        
+                                        FontFamily="times new roman"
+                                        Foreground="White"
+                                        Margin="5"
+                                        Width="50"
+                                        
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Path=DaysLeft,Mode=OneWay}"
+                                        Background="{Binding Path=DaysColor,Mode=OneWay}"
+                                        FontSize="12" />
+                                </WrapPanel>
+                                <TextBlock
+                                    Text="{Binding Path=ClientName}"
+                                    FontSize="15"
+                                    FontFamily="微软雅黑"
+                                    Height="30"
+                                    VerticalAlignment="Center" />
+                                <TextBlock
+                                    Text="{Binding Path=DocName}"
+                                    FontSize="15"
+                                    FontFamily="微软雅黑"
+                                    Height="30" />
+                                
+                                <!--<WrapPanel
+                                    Height="30">
+                                    <TextBlock
+                                        Text="{Binding Path=CaseType}"
+                                        Foreground="Gray"
+                                        VerticalAlignment="Center" />
+
+                                    <Label
+                                        Content="权值"
+                                        Foreground="Gray" />
+                                    <TextBlock
+                                        x:Name="tbkWeight"
+                                        Text="{Binding Path=Weight}"
+                                        VerticalAlignment="Center"
+                                        Foreground="Gray" />
+                                    
+                                </WrapPanel>-->
+                                <TextBlock
+                                    Text="{Binding Path=Taskinfo}"
+                                    FontSize="11"
+                                    FontFamily="微软雅黑"
+                                    Foreground="Orange"
+                                    TextDecorations="underline"
+                                    TextWrapping="WrapWithOverflow"
+                                    />
+
+                                <WrapPanel
+                                    Margin="0,5">                                 
+                                </WrapPanel>
+
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Column="1">
+                                <WrapPanel
+                                    HorizontalAlignment="Right"
+                                    Height="30">
+
+
+                                </WrapPanel>
+
+
+                            </StackPanel>
+                        </Grid>
+
+                    </Border>
+
+                    <WrapPanel
+                        Grid.Row="2"
+                        HorizontalAlignment="Center"
+                        Margin="0,3"
+                        Visibility="Collapsed">
+                        <DatePicker
+                            x:Name="dtpkStateDate"
+                            VerticalContentAlignment="Center"
+                            FontFamily="times new roman" />
+                        
+                        
+                        <TextBlock
+                            x:Name="tbTaskID"
+                            Text="{Binding Path=TaskID}"
+                            Visibility="Hidden" />
+                    </WrapPanel>
+                    <Expander
+                        x:Name="expdDetails"
+                        Header="任务详情"
+                        Foreground="Blue"                        
+                        Grid.Row="1">
+                        <Border
+                            BorderBrush="LightGray"
+                            BorderThickness="0,0,1,0"
+                            Margin="0,0,10,0">
+                            <StackPanel>
+                                <Label
+                                    Content="案件信息"
+                                    Style="{DynamicResource lableStyle}" />
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                        FontWeight="Bold"
+                                        Content="我方案号：" />
+                                    <TextBox
+                                        Grid.Column="1"
+                                        x:Name="tbAttorneyNum"
+                                        Text="{Binding Path=AttorneyNum}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="1"
+                                        FontWeight="Bold"
+                                        Content="客户案号：" />
+                                    <TextBox
+                                        x:Name="tbClientNum"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=ClientNum}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="2"
+                                        FontWeight="Bold"
+                                        Content="客户名称：" />
+                                    <TextBox
+                                        x:Name="tbApplicant"
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=ClientName}"
+                                        Style="{StaticResource txCaseInfo}"
+                                        Background="{x:Null}" />
+                                    <Label
+                                        Grid.Row="3"
+                                        FontWeight="Bold"
+                                        Content="交底名称：" />
+                                    <TextBox
+                                        x:Name="tbDocName"
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=DocName}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="4"
+                                        FontWeight="Bold"
+                                        Content="申请号：" />
+                                    <TextBox
+                                        x:Name="tbAppNum"
+                                        Grid.Row="4"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=ApplicationNum}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="5"
+                                        FontWeight="Bold"
+                                        Content="任务类型：" />
+                                    <TextBox
+                                        
+                                        x:Name="tbCaseType"
+                                        Grid.Row="5"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=CaseType}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="6"
+                                        FontWeight="Bold"
+                                        Content="初稿时限：" />
+                                    <TextBox
+                                        x:Name="tbFirstVersionDeadline"
+                                        Grid.Row="6"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=FirstVirsionDeadline,StringFormat ={}{0:yyyy-MM-dd}}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="7"
+                                        FontWeight="Bold"
+                                        Content="初稿日期：" />
+                                    <TextBox
+                                        x:Name="tbFirstVersionDoneDate"
+                                        Grid.Row="7"
+                                        Grid.Column="1"                                        
+                                        Text="{Binding Path=FirstVirsionDoneDate,StringFormat ={}{0:yyyy-MM-dd}}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    
+                                    <!--SelectedDateChanged="dpFirstVirsionDate_SelectedDateChanged"-->
+                                    <Label
+                                        Grid.Row="8"
+                                        FontWeight="Bold"
+                                        Content="完成时限：" />
+                                    <TextBox
+                                        x:Name="tbFinishDeadline"
+                                        Grid.Row="8"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=Deadline,StringFormat ={}{0:yyyy-MM-dd}}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="9"
+                                        FontWeight="Bold"
+                                        Content="完成日期：" />
+                                    
+                                    
+                                    <Label
+                                        Grid.Row="10"
+                                        FontWeight="Bold"
+                                        Content="代理人：" />
+                                    <TextBox
+                                        x:Name="tbAgent"
+                                        Grid.Row="10"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=Attorney,Mode=OneWay}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                    <Label
+                                        Grid.Row="11"
+                                        FontWeight="Bold"
+                                        Content="当前状态：" />
+                                    <TextBox
+                                        x:Name="tbTaskStatus"
+                                        Grid.Row="11"
+                                        Grid.Column="1"
+                                        Text="{Binding Path=TaskStatus}"
+                                        Style="{StaticResource txCaseInfo}" />
+                                </Grid>
+
+                                
+                                <ComboBox
+                                    x:Name="cbxTaskStatus"
+                                    Visibility="Collapsed">
+                                    <!--SelectionChanged="cbxTaskStatus_SelectionChanged"-->
+                                    <ComboBoxItem
+                                        Content="未处理" />
+                                    <ComboBoxItem
+                                        Content="客户确认中" />
+                                    <ComboBoxItem
+                                        Content="内部审核中" />
+                                    <ComboBoxItem
+                                        Content="已提交" />
+                                    <ComboBoxItem
+                                        Content="结案" />
+                                    <ComboBoxItem
+                                        Content="暂停" />
+                                </ComboBox>
+
+                            </StackPanel>
+                        </Border>
+                    </Expander>
+                    <ScrollViewer
+                        Grid.Row="2"
+                        VerticalScrollBarVisibility="Hidden">
+                        <ScrollViewer.Background>
+                            <SolidColorBrush
+                                Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}" />
+                        </ScrollViewer.Background>
+                        <StackPanel
+                            ScrollViewer.CanContentScroll="True">
+                            <!--案件信息-->
+                            <Border
+                                x:Name="borderTaskInfo"
+                                Style="{DynamicResource borderStyle}"
+                                BorderBrush="{Binding Path=StateColor}">
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition
+                                            />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                   
+                                    <Border
+                                        Grid.ColumnSpan="2"
+                                        BorderBrush="LightGray"
+                                        BorderThickness="1"
+                                        Margin="0,0,10,0">
+                                        <StackPanel>
+                                            <Label
+                                                Content="文件信息"
+                                                Style="{DynamicResource lableStyle}" />
+                                            <WrapPanel Margin="5,5">
+                                                <Button
+                                                    x:Name="btnBack"
+                                                    Click="btnBack_Click"
+                                                    Background="Transparent"
+                                                    Width="32">
+                                                    <Button.Content>
+                                                        <WrapPanel>
+                                                            <Image
+                                                                Source="icon\后退.png"
+                                                                ToolTip="后退" />
+                                                            
+                                                        </WrapPanel>
+                                                    </Button.Content>
+
+                                                </Button>
+                                                <Button
+                                                    x:Name="btnForward"
+                                                    Width="32"
+                                                    Margin="5,0"
+                                                    Background="Transparent"
+                                                    Click="btnForward_Click">
+                                                    <Button.Content>
+                                                        <WrapPanel>
+                                                            <Image
+                                                                Source="icon\前进.png"
+                                                                ToolTip="前进" />
+
+                                                        </WrapPanel>
+                                                    </Button.Content>
+
+                                                </Button>
+                                                
+                                                <Button
+                                                    x:Name="btnOpenLocal"
+                                                    Width="32"
+                                                    Background="Transparent"
+                                                    Click="openLocal_Click">
+                                                    <Button.Content>
+                                                        <WrapPanel>
+                                                            <Image
+                                                                Source="icon\打开文件夹.png"
+                                                                ToolTip="在文件系统中打开本地" />
+
+                                                        </WrapPanel>
+                                                    </Button.Content>
+
+                                                </Button>
+                                                <Button
+                                                    x:Name="btnNewApp"
+                                                    Width="32"
+                                                    Margin="5,0"
+                                                    Background="Transparent"
+                                                    Click="btnCreateApp_Click">
+                                                    <Button.Content>
+                                                        <WrapPanel>
+                                                            <Image
+                                                                Source="icon\发明.png"
+                                                                ToolTip="新建发明" />
+
+                                                        </WrapPanel>
+                                                    </Button.Content>
+
+                                                </Button>
+                                                <Button
+                                                    x:Name="btnNewUnity"
+                                                    Width="32"
+                                                    Background="Transparent"
+                                                    Click="btnCreateNewModel_Click">
+                                                    <Button.Content>
+                                                        <WrapPanel>
+                                                            <Image
+                                                                Source="icon\实用新型.png"
+                                                                ToolTip="新建新型" />
+
+                                                        </WrapPanel>
+                                                    </Button.Content>
+
+                                                </Button>
+                                                <Button
+                                                    x:Name="btnNewOA"
+                                                    Width="32"
+                                                    Margin="5,0"
+                                                    Background="Transparent"
+                                                    Click="btnCreateOA_Click">
+                                                    <Button.Content>
+                                                        <WrapPanel>
+                                                            <Image
+                                                                Source="icon\OA.png"
+                                                                ToolTip="新建OA" />
+
+                                                        </WrapPanel>
+                                                    </Button.Content>
+
+                                                </Button>
+                                            </WrapPanel>
+
+                                            <WebBrowser
+                                                x:Name="wbLocalFiles"
+                                                Height="500" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+        </Grid>
+        <StatusBar
+            Grid.Row="2">
+            <WrapPanel>
+                <Label
+                    Content="本月初稿权值："
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    x:Name="tbkFirstVirsionTotalWeight"
+                    Margin="0,0,25,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold" 
+                    Foreground="Blue"
+                    TextDecorations="underline"
+                    MouseLeftButtonUp="tbkFirstVirsionTotalWeight_MouseLeftButtonUp"
+                    ToolTip="点击显示初稿详情" />
+                <Label
+                    Content="本月递交权值："
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    x:Name="tbkDoneWeight"
+                    Margin="0,0,25,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    TextDecorations="underline"
+                    Foreground="Blue"                    
+                    MouseLeftButtonUp="tbkDoneWeight_MouseLeftButtonUp"
+                    ToolTip="点击显示初稿详情" />
+                <Label
+                    Content="全组本月初稿权值："
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    x:Name="tbkFirstVirsionGroupTotalWeight"
+                    Margin="0,0,25,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Foreground="Blue"
+                    TextDecorations="underline"
+                    MouseLeftButtonUp="tbkFirstVirsionGroupTotalWeight_MouseLeftButtonUp"
+                    ToolTip="点击显示初稿详情" />
+                <Label
+                    Content="全组本月递交权值："
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    x:Name="tbkGroupDoneWeight"
+                    Margin="0,0,25,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    TextDecorations="underline"
+                    Foreground="Blue"
+                    MouseLeftButtonUp="tbkGroupDoneWeight_MouseLeftButtonUp"
+                    ToolTip="点击显示初稿详情" />
+                <Label
+                    Content="积压案件数量："
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    x:Name="tbkOverStock"
+                    Margin="0,0,25,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    TextDecorations="underline"
+                    Foreground="Blue"
+                    MouseLeftButtonUp="tbkOverStock_MouseLeftButtonUp"
+                    ToolTip="点击显示积压案件列表" />
+                <Label
+                    Content="超期案件数量："
+                    VerticalAlignment="Center" />
+                <TextBlock
+                    x:Name="tbkOutofLimit"
+                    Margin="0,0,25,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    TextDecorations="underline"
+                    Foreground="Blue"
+                    MouseLeftButtonUp="tbkOutofLimit_MouseLeftButtonUp"
+                    ToolTip="点击显示超期案件列表" />
+
+            </WrapPanel>
+        </StatusBar>
+    </Grid>
+</Window>

@@ -1,0 +1,192 @@
+﻿<Window x:Class="WpfWithNet.SubWindow.CaseInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+        mc:Ignorable="d"
+        Title="案件基本信息" Height="540" Width="600" ResizeMode="NoResize" Loaded="Window_Loaded">
+    <StackPanel>
+        <Label
+            Content="案件基本信息"
+            Style="{DynamicResource lableStyle}" />
+        <Grid Height="390">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+                <RowDefinition
+                    Height="10" />
+            <RowDefinition />
+            <RowDefinition Height="130"/>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition
+                Width="140" />
+            <ColumnDefinition
+                Width="75" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <!--我方案号 客户案号-->
+           <Label
+            Style="{DynamicResource lbInfo}"
+            Content="我方案号：" />
+            <TextBox 
+                Style="{DynamicResource txCaseInfo1}"
+                Grid.Column="1" 
+                x:Name="tbCaseInfoAttorneyNum" 
+                Text="{Binding Path=AttorneyNum}"/>
+        <Label 
+            Style="{DynamicResource lbInfo}"
+            Content="客户案号：" 
+            Grid.Column="2"/>
+        <TextBox
+            Style="{DynamicResource txCaseInfo1}"
+            Grid.Column="3"
+            x:Name="tbCaseInfoClientNum" 
+                Text="{Binding Path=ClientNum}"/>
+        <!--交底名称-->
+        <Label
+            Style="{DynamicResource lbInfo}"
+            Grid.Row="1"
+            Content="交底名称：" />
+        <TextBox
+            Style="{DynamicResource txCaseInfo1}"
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            x:Name="tbCaseInfoDocName"
+            Text="{Binding Path=DocName}" />
+        <!--发明名称-->
+        <Label
+            Style="{DynamicResource lbInfo}"
+            Grid.Row="2"
+            Content="发明名称："/>
+        <TextBox
+            Style="{DynamicResource txCaseInfo2}"
+            Grid.Row="2"
+            Grid.Column="1" Grid.ColumnSpan="3"
+            x:Name="tbCaseInfoInventionName" Text="{Binding Path=InventionName}" />
+        <!--申请人-->
+        <Label
+            Style="{DynamicResource lbInfo}"
+            Grid.Row="3" 
+            Content="申请人：" />
+        <TextBox
+            Style="{DynamicResource txCaseInfo1}"
+            Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+                x:Name="tbCaseInfoApplicant"
+                Text="{Binding Path=Applicant}"/>
+        <!--发明人-->
+
+        <Label
+            Style="{DynamicResource lbInfo}"
+            Grid.Row="4"
+            Content="内部状态："/>
+            <TextBox
+            Style="{DynamicResource txCaseInfo2}"
+            Grid.Row="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+                x:Name="tbCaseInfoInventor"
+                Text="{Binding Path=InternalState}" />
+            <Label
+                Style="{DynamicResource lbInfo}"
+                Grid.Row="4"
+                Grid.Column="2"
+                Content="技术领域：" />
+            <TextBox
+                Style="{DynamicResource txCaseInfo2}"
+                Grid.Row="4"
+                Grid.Column="3"
+                Grid.ColumnSpan="2"
+                x:Name="tbTechField"
+                Text="{Binding Path=TechField}" />
+
+            <Label
+                Style="{DynamicResource lbInfo}"
+                Grid.Row="5" Content="申请号:"/>
+            <TextBox
+                Style="{DynamicResource txCaseInfo2}"
+                Grid.Row="5"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                x:Name="tbCaseInfoApplicationID"
+                Text="{Binding Path=ApplicationNum}"
+                 />
+
+            <Border
+                Grid.Row="6"
+                Grid.ColumnSpan="4"
+                BorderBrush="LightGray"
+                BorderThickness="0,1,0,0" />
+            <!--案件历史-->
+            <Label
+                Style="{DynamicResource lbInfo}"
+                Grid.Row="7"
+                Content="案件历史：" />
+            
+            <ListView Grid.Row="8"
+                      Grid.ColumnSpan="4"
+                x:Name="lvwHistory"
+                Height="120"
+                Margin="10,3">
+                <ListView.View>
+                    <GridView>
+
+                        <GridViewColumn
+                            Header="类型"
+                            Width="70"
+                            DisplayMemberBinding="{Binding Path=任务名称}" />
+                        <GridViewColumn
+                            Header="属性"
+                            Width="70"
+                            DisplayMemberBinding="{Binding Path=任务属性}" />
+                        <GridViewColumn
+                            Header="开始日期"
+                            Width="100"
+                            DisplayMemberBinding="{Binding Path=配案日,StringFormat={}{0:yyyy-MM-dd}}" />
+                        <GridViewColumn
+                            Header="初稿日期"
+                            Width="100"
+                            DisplayMemberBinding="{Binding Path=初稿日,StringFormat={}{0:yyyy-MM-dd}}" />
+                        <GridViewColumn
+                            Header="完成日期"
+                            Width="100"
+                            DisplayMemberBinding="{Binding Path=完成日,StringFormat={}{0:yyyy-MM-dd}}" />
+                        <!--<GridViewColumn
+                            Header="权值"
+                            Width="40"
+                            DisplayMemberBinding="{Binding Path=权值}" />-->
+
+                        <GridViewColumn
+                            Header="状态"
+                            Width="80"
+                            DisplayMemberBinding="{Binding Path=代理人处理状态}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Label
+            Style="{DynamicResource lbInfo}"
+            Grid.Row="9" Content="个人体会："/>
+            <TextBox
+                Style="{DynamicResource txCaseInfo2}"
+                Grid.Row="9" Grid.Column="1"
+                Grid.ColumnSpan="3"
+                     Width="450"
+                     HorizontalAlignment="Left"
+                x:Name="tbCaseInfoFinishReason" Text="{Binding Path=FinishReason}"/>
+                   
+    </Grid>
+        
+    </StackPanel>
+    
+</Window>

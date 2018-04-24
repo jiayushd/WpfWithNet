@@ -1,0 +1,222 @@
+﻿<Window x:Class="WpfWithNet.SubWindow.GeneralViewofMembers"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+        mc:Ignorable="d"
+        Title="部门概况" Height="800" Width="1200" Loaded="Window_Loaded" ResizeMode="CanResize">
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="gridcolumn1" Width="530"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <DataGrid
+            Grid.Row="1"
+            MouseLeave="dgGeneralViewofMembers_MouseLeave"
+            MouseEnter="dgGeneralViewofMembers_MouseEnter"
+            x:Name="dgGeneralViewofMembers" 
+            AutoGenerateColumns="False" Width="Auto" Margin="10,5" HorizontalAlignment="Center">
+            
+            <DataGrid.RowStyle>
+                <Style
+                    TargetType="DataGridRow">
+                    <Setter
+                        Property="Height"
+                        Value="25" />
+                    <Setter
+                        Property="VerticalAlignment"
+                        Value="Center" />
+
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.ColumnHeaderStyle>
+                <Style
+                    TargetType="DataGridColumnHeader">
+                    <Setter
+                        Property="HorizontalContentAlignment"
+                        Value="Center" />
+                </Style>
+               
+               
+            </DataGrid.ColumnHeaderStyle>  
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="公司"
+                    Width="80"
+                    ElementStyle="{StaticResource contentCenterStyle}"
+                    Binding="{Binding company}" />
+                <DataGridTextColumn
+                    Header="姓名"
+                    Width="80"
+                    
+                    ElementStyle="{StaticResource contentCenterStyle}"
+                    Binding="{Binding name}" />                
+                <DataGridTemplateColumn
+                    Header="国内"
+                    Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding numDomesdic}"
+                                Click="ButtonDomesdic_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Header="涉外"
+                    Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding numGlobal}"
+                                Click="ButtonGlobal_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Header="可处理"
+                    Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding numTodo}"
+                                Click="ButtonTodo_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Header="初稿"
+                    Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding numFirstVirsion}"
+                                Click="ButtonFirstVirsion_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn
+                    Header="OA总数"
+                    Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding numOAtotal}"
+                                Click="ButtonOAtotal_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <!--<DataGridHyperlinkColumn
+                    Header="Email"
+                    Width="50"
+                    Binding="{Binding numOAin30}" />-->
+                <DataGridTemplateColumn
+                    Header="30天内OA"
+                    Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding numOAin30}"
+                                Click="ButtonOAin30_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>                    
+                </DataGridTemplateColumn>
+                
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <StackPanel
+            Grid.Column="1"
+            Grid.Row="1">
+            <TextBlock
+                x:Name="tbIndicator" FontWeight="Bold" FontSize="20" Text=""/>
+            <DataGrid
+                Grid.Column="1"
+                x:Name="dgDetailViewofMember"
+                AutoGenerateColumns="False"
+                HorizontalAlignment="Left"
+                Margin="0,5">
+                <DataGrid.RowStyle>
+                    <Style
+                        TargetType="DataGridRow">
+                        <Setter
+                            Property="Height"
+                            Value="30" />
+                        <Setter
+                            Property="VerticalAlignment"
+                            Value="Center" />
+
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style
+                        TargetType="DataGridColumnHeader">
+                        <Setter
+                            Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    </Style>
+
+                </DataGrid.ColumnHeaderStyle>  
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Header="我方案号"
+                        Width="120"
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 我方文号}" />
+                    <DataGridTextColumn
+                        Header="客户名称"
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 客户名称}" />
+                    <DataGridTextColumn
+                        Header="案件类型"
+                        
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 任务名称}" />
+                    <DataGridTextColumn
+                        Header="开案名称"
+                        
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 开案名称}" />
+                    <DataGridTextColumn
+                        Header="开案日期"
+                        Width="120"
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 配案日,StringFormat='{}{0:yyyy-MM-dd}'}" />
+                    <DataGridTextColumn
+                        Header="初稿日"
+                        Width="120"
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 初稿日,StringFormat='{}{0:yyyy-MM-dd}'}" />
+                    <DataGridTextColumn
+                        Header="完成期限"
+                        Width="120"
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 官方期限,StringFormat='{}{0:yyyy-MM-dd}'}" />
+                    <DataGridTextColumn
+                        Header="案件状态"
+                        ElementStyle="{StaticResource contentCenterStyle1}"
+                        Binding="{Binding 代理人处理状态}" />
+                    <!--<DataGridTextColumn
+                    Header="30天内OA"
+                    Width="120"
+                    ElementStyle="{StaticResource contentCenterStyle}"
+                    Binding="{Binding numOAin30}" />-->
+                    <!--<DataGridHyperlinkColumn
+                    Header="Email"
+                    Width="150"
+                    Binding="{Binding Email}" />-->
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </StackPanel>
+        
+
+    </Grid>
+</Window>

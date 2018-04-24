@@ -1,0 +1,54 @@
+﻿<Window x:Class="WpfWithNet.SubWindow.MaintainPerson"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+        mc:Ignorable="d"
+        Title="MaintainPerson" Height="280" Width="500" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <StackPanel>
+            <WrapPanel Margin="5">
+                <Label Content="姓名"/>
+                <TextBox x:Name="tbName" Width="200" VerticalContentAlignment="Center"/>
+                <Label Content="电话"/>
+                <TextBox x:Name="tbTel" Width="200" VerticalContentAlignment="Center"/>
+            </WrapPanel>
+            <WrapPanel Margin="5">
+                <Label Content="手机"/>
+                <TextBox x:Name="tbPhone" Width="200" VerticalContentAlignment="Center"/>
+                <Label Content="邮箱"/>
+                <TextBox x:Name="tbEmail" Width="200" VerticalContentAlignment="Center"/>
+            </WrapPanel>
+            <WrapPanel Margin="5">
+                <Label Content="公司"/>
+                <TextBox x:Name="tbCompany" Width="200" VerticalContentAlignment="Center"/>
+                <Label Content="部门"/>
+                <TextBox x:Name="tbDept" Width="200" VerticalContentAlignment="Center"/>
+            </WrapPanel>
+            <!--<WrapPanel Margin="5">
+                <Label Content="职务"/>
+                <ComboBox x:Name="cmbJob" Width="200">
+                    <ComboBoxItem Content="IP"/>
+                    <ComboBoxItem Content="发明人"/>
+                    <ComboBoxItem Content="流程"/>
+                </ComboBox>
+                <Label Content="职位"/>
+                <TextBox x:Name="tbPosition" Width="200" VerticalContentAlignment="Center"/>
+            </WrapPanel>
+            <WrapPanel Margin="5">
+                <Label Content="是否在职"/>
+                <ComboBox x:Name="tbIsQuit" Width="100">
+                    <ComboBoxItem Content="是"/>
+                    <ComboBoxItem Content="否"/>
+                </ComboBox>
+            </WrapPanel>-->
+
+            <WrapPanel Width="200" Margin="15">
+                <Button x:Name="btnConfirmModify" Content="确定" Height="25" Width="80" Margin="5" Visibility="Collapsed"/>
+                <Button x:Name="btnConfirm" Content="确定" Height="25" Width="80" Margin="5" Click="btnConfirm_Click"/>
+                <Button x:Name="btnCancel" Content="取消" Height="25" Width="80" Margin="5"/>
+            </WrapPanel>
+        </StackPanel>
+    </Grid>
+</Window>

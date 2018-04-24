@@ -1,0 +1,23 @@
+﻿<Window x:Class="WpfWithNet.SubWindow.Link"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+        mc:Ignorable="d"
+        Title="Link" Height="300" Width="300" Loaded="Window_Loaded">
+    <Grid>
+        <StackPanel >
+            <Label x:Name="lbClientName" HorizontalAlignment="Center" FontSize="15"/>
+            <Label Content="关联已有路径" FontSize="14" Foreground="Blue"/>
+            <Border BorderBrush="Gray" BorderThickness="0,0,0,1"/>
+            <Label Content="选择一个客户:" Margin="15,2"/>
+            <ComboBox x:Name="cmbClientList" Margin="15,2">
+
+            </ComboBox>
+            <Button x:Name="btnLink" Content="关联" Width="50" HorizontalAlignment="Right" Margin="15,2"
+                    Background="Transparent" BorderBrush="{x:Null}" Click="btnLink_Click"/>
+            
+        </StackPanel>
+    </Grid>
+</Window>

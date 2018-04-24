@@ -1,0 +1,168 @@
+﻿<Window
+    x:Class="WpfWithNet.SubWindow.Deadline"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+    mc:Ignorable="d"
+    Title="个人指标"
+    Height="200"
+    Width="430" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <ComboBox x:Name="namelist" SelectionChanged="namelist_SelectionChanged">
+            <ComboBoxItem
+                Content="C 陈隆" />
+            <ComboBoxItem
+                Content="G 郭小满" />
+            <ComboBoxItem
+                Content="H 何茹玥" />
+            <ComboBoxItem
+                Content="L 罗美红" />
+            <ComboBoxItem
+                Content="L 刘赏源" />
+            <ComboBoxItem 
+                Content="S 舒丁"/>
+            <ComboBoxItem
+                Content="W 吴黎丽" />
+            <ComboBoxItem
+                Content="W 魏亮" />
+            <ComboBoxItem
+                Content="X 熊文杰" />
+            <ComboBoxItem
+                Content="Y 虞凌霄" />
+            <ComboBoxItem
+                Content="Y 姚许" />
+            <ComboBoxItem
+                Content="Z 张杨" />
+            <DataGrid
+                x:Name="dataGrid"
+                Height="100"
+                Width="100" />
+
+        </ComboBox>
+        <GroupBox
+            Header="超期指标"
+            Grid.Row="1">
+            <Grid>
+                <StackPanel>
+                    <WrapPanel>
+                        <Label
+                            Content="经手超期案件：" />
+                        <TextBlock
+                            x:Name="tbOutofLimitByHand"
+                            Margin="0,0,25,0"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            TextDecorations="underline"
+                            Foreground="Blue"
+                            MouseLeftButtonUp="OutofLimitByHand_MouseLeftButtonUp"
+                            ToolTip="点击显示经手超期案件列表" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label
+                            Content="经手总案件：" />
+                        <TextBlock
+                            x:Name="tbNewApp_Total"
+                            Margin="0,0,25,0"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            TextDecorations="underline"
+                            Foreground="Blue"
+                            MouseLeftButtonUp="tbNewApp_Total_MouseLeftButtonUp"
+                            ToolTip="点击显示经手总案件列表" />
+                        
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label
+                            Content="超期率：" />
+                        <TextBlock
+                            x:Name="tbPortionOfOutofLimit"
+                            Margin="0,0,25,0"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            
+                            Foreground="Red"
+                             />
+                        
+                        
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label
+                            Content="超期分" />
+                        <TextBlock
+                            x:Name="tbDaysOfOutofLimit"
+                            Margin="0,0,25,0"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Foreground="Red" />
+                       
+                    </WrapPanel>
+                   
+                </StackPanel>
+
+            </Grid>
+
+        </GroupBox>
+
+        <GroupBox
+            Header="完成指标"
+            Grid.Row="1"
+            Grid.Column="1">
+            <StackPanel>
+                <WrapPanel>
+                    <Label
+                        Content="新申请初稿权值总量：" />
+                    <TextBlock
+                        x:Name="tbNewAppTotalWeight"
+                        Margin="0,0,25,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        TextDecorations="underline"
+                        Foreground="Blue"
+                        MouseLeftButtonUp="OutofLimitByHand_MouseLeftButtonUp"
+                        ToolTip="点击显示新申请初稿列表" />
+                </WrapPanel>
+                <WrapPanel>
+                    <Label
+                        Content="OA初稿数量：" />
+                    <TextBlock
+                        x:Name="tbOACount"
+                        Margin="0,0,25,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        TextDecorations="underline"
+                        Foreground="Blue"
+                        MouseLeftButtonUp="tbNewApp_Total_MouseLeftButtonUp"
+                        ToolTip="点击显示OA初稿列表" />
+
+                </WrapPanel>
+
+                <WrapPanel>
+                    <Label
+                        Content="完成分：" />
+                    <TextBlock
+                        x:Name="tbScoreOfDone"
+                        Margin="0,0,25,0"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        TextDecorations="underline"
+                        Foreground="Blue"
+                        MouseLeftButtonUp="tbNewApp_Total_MouseLeftButtonUp"
+                         />
+
+                </WrapPanel>
+            </StackPanel>
+
+        </GroupBox>
+    </Grid>
+</Window>

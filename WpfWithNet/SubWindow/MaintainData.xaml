@@ -1,0 +1,63 @@
+﻿<Window x:Class="WpfWithNet.SubWindow.MaintainData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+        mc:Ignorable="d"
+        Title="维护数据" Height="600" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <TabControl x:Name="tbcMaintainData">
+            <TabItem x:Name="tiContact" Header="联系人">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <WrapPanel Margin="5">
+                        <Button x:Name="btnAddContact" Content="新增" Width="60" Margin="5,0" Click="btnAddContact_Click"/>
+                        <Button x:Name="btnModifyContact" Content="修改" Width="60" Click="btnModifyContact_Click"/>
+                        <!--<Button x:Name="btnDeleteContact" Content="删除" Width="60" Margin="5,0" Click="btnDeleteContact_Click"/>-->
+                        <TextBox x:Name="tbSearchContact" Width="200" Margin="5,0" TextChanged="tbSearchContact_TextChanged"/>
+                    </WrapPanel>
+
+                    <ListView x:Name="lvwContact" Grid.Row="2" Margin="5">
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="姓名" Width="80" DisplayMemberBinding="{Binding Path=姓名}"/>
+                                <GridViewColumn Header="座机" Width="150" DisplayMemberBinding="{Binding Path=座机}"/>
+                                <GridViewColumn Header="邮箱" Width="150" DisplayMemberBinding="{Binding Path=邮箱}"/>
+                                <GridViewColumn Header="手机" Width="150" DisplayMemberBinding="{Binding Path=手机}"/>
+                                <GridViewColumn Header="公司" Width="150" DisplayMemberBinding="{Binding Path=公司}"/>
+                                <GridViewColumn Header="部门" Width="150" DisplayMemberBinding="{Binding Path=部门}"/>
+                                <GridViewColumn Header="职务" Width="150" DisplayMemberBinding="{Binding Path=职务}"/>
+                                <GridViewColumn Header="职位" Width="150" DisplayMemberBinding="{Binding Path=职位}"/>
+                                <GridViewColumn Header="是否在职" Width="150" DisplayMemberBinding="{Binding Path=是否在职}"/>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tiCompany" Header="客户公司">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    
+                    <ListView x:Name="lvwCompany" Grid.Row="1" Margin="5">
+                        <ListView.View>
+                            <GridView >
+                                <GridViewColumn Header="名称" Width="80" DisplayMemberBinding="{Binding Path=简称}"/>
+                                <GridViewColumn Header="接案人" Width="150" DisplayMemberBinding="{Binding Path=接案人}"/>
+                                <GridViewColumn Header="服务器地址" Width="250" DisplayMemberBinding="{Binding Path=服务器地址}"/>
+                                <GridViewColumn Header="客户要求" Width="350" DisplayMemberBinding="{Binding Path=公司说明}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

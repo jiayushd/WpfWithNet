@@ -1,0 +1,218 @@
+﻿<Window
+    x:Class="WpfWithNet.SubWindow.DataQuery"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WpfWithNet.SubWindow"
+    mc:Ignorable="d"
+    Title="数据查询">
+    <Window.Resources>
+        <Style
+            x:Key="tbStyle1"
+            TargetType="{x:Type TextBox}">
+            <Setter
+                Property="Width"
+                Value="170" />
+            <Setter
+                Property="Height"
+                Value="25" />
+            <Setter
+                Property="VerticalAlignment"
+                Value="Center" />
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="49*" />
+            <ColumnDefinition
+                Width="27*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition
+                Height="40" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.ColumnSpan="2">
+            <Label
+                Content="选择条件"
+                FontSize="14"
+                Foreground="Blue" />
+            <Border
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1" />
+            <WrapPanel
+                VerticalAlignment="Center"
+                Margin="15,0">
+                <Label
+                    Content="起始日期：" />
+                <DatePicker
+                    x:Name="dpStartDate" />
+                <Label
+                    Content="结束日期："
+                    Margin="30,0,0,0" />
+                <DatePicker
+                    x:Name="dpEndDate" />
+                <Button
+                    x:Name="btnCalculate"
+                    Content="初稿查询"
+                    Width="60"
+                    HorizontalAlignment="Right"
+                    Margin="40,0,0,0"
+                    Click="btnCalculate_Click" />
+                <Button
+                    x:Name="btnQueryDone"
+                    Content="提交查询"
+                    Width="60"
+                    HorizontalAlignment="Right"
+                    Margin="40,0,0,0"
+                    Click="btnQueryDone_Click" />
+            </WrapPanel>
+            <StackPanel>
+                <WrapPanel
+                    Margin="20,3">
+                    <TextBlock
+                        Text="我方案号:"
+                        Width="55" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchCaseFileID" />
+                    <TextBlock
+                        Text="交底名称:"
+                        Width="55"
+                        Margin="5,0,0,0" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchDocName"
+                         />
+                </WrapPanel>
+                <WrapPanel
+                    Margin="20,3">
+                    <TextBlock
+                        Text="客户案号:"
+                        Width="55" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchCustomSN" />
+                    <TextBlock
+                        Text="任务类型:"
+                        Width="55"
+                        Margin="5,0,0,0" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchTaskType" />
+                </WrapPanel>
+                <WrapPanel
+                    Margin="20,3">
+                    <TextBlock
+                        Text="申请号:"
+                        Width="55" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbApplicationNum" />
+                    <TextBlock
+                        Text="代理人:"
+                        Width="55"
+                        Margin="5,0,0,0" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchAttorneyID" />
+                </WrapPanel>
+                <WrapPanel
+                    Margin="20,3">
+                    <TextBlock
+                        Text="客户名称:"
+                        Width="55" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchApplicantTag" />
+                    <TextBlock
+                        Text="当前状态:"
+                        Width="55"
+                        Margin="5,0,0,0" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchStatus" />
+                </WrapPanel>
+                <WrapPanel
+                    Margin="20,3">
+                    <TextBlock
+                        Text="备注:"
+                        Width="55" />
+                    <TextBox
+                        Style="{StaticResource tbStyle1}"
+                        x:Name="tbSearchTaskInfo"
+                        Width="220" />
+                </WrapPanel>
+                <WrapPanel
+                    Margin="20,3"
+                    FlowDirection="RightToLeft">
+                    <Button
+                        x:Name="AdvanceSearch"
+                        Content="搜索"
+                        Width="60"
+                        Click="AdvanceSearch_Click" />
+                </WrapPanel>
+                <Border
+                    BorderBrush="LightGray"
+                    BorderThickness="0,1,0,0" />
+
+            </StackPanel>
+            <Label
+                Content="查询结果"
+                FontSize="14"
+                Foreground="Blue" />
+            <Border
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1" />
+        </StackPanel>
+
+        <ListView
+            x:Name="lvwFirstVirsionList"
+            Grid.Row="1"
+            Margin="10,3"
+            Grid.ColumnSpan="2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+                        Header="姓名"
+                        Width="60"
+                        DisplayMemberBinding="{Binding Path=代理人}" />
+                    <GridViewColumn
+                        Header="案号"
+                        Width="120"
+                        DisplayMemberBinding="{Binding Path=我方案号}" />
+                    <GridViewColumn
+                        Header="类型"
+                        Width="60"
+                        DisplayMemberBinding="{Binding Path=案件类型}" />
+                    <GridViewColumn
+                        Header="初稿日期"
+                        Width="100"
+                        DisplayMemberBinding="{Binding Path=初稿时间,StringFormat={}{0:yyyy-MM-dd}}" />
+                    <GridViewColumn
+                        Header="提交日期"
+                        Width="100"
+                        DisplayMemberBinding="{Binding Path=提交时间,StringFormat={}{0:yyyy-MM-dd}}" />
+                    <GridViewColumn
+                        Header="权值"
+                        Width="40"
+                        DisplayMemberBinding="{Binding Path=权值}" />
+                    <GridViewColumn
+                        Header="客户"
+                        Width="180"
+                        DisplayMemberBinding="{Binding Path=申请人}" />
+                    <GridViewColumn
+                        Header="状态"
+                        Width="80"
+                        DisplayMemberBinding="{Binding Path=案件状态}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+    </Grid>
+</Window>
