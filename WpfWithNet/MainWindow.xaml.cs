@@ -992,21 +992,21 @@ namespace WpfWithNet
         {
 
 
-            string pathCases = CurrentDir+"MyData\\案件列表.xls";
-            string pathTasks = CurrentDir+"MyData\\任务列表.xls";
-            System.Data.DataTable dtCases = new System.Data.DataTable();
-            System.Data.DataTable dtTasks = new System.Data.DataTable();
-            AccessCUID acuid = new AccessCUID();
-            ExcelCUID exlcuid = new ExcelCUID();
-            acuid.Update("delete * from Tasks", CurrentDir+"MyData\\dataset.accdb");
-            acuid.Update("delete * from Cases", CurrentDir+"MyData\\dataset.accdb");
-            string sqlCases = "select * from [Sheet1$] order by 委案日期 desc";
-            string sqlTasks = "select * from [Sheet1$] order by 配案日 desc";
-            //string sqlTasks = "select * from [Sheet1$] where 承办人='" + UserName + "' order by 配案日 desc";
-            dtCases = exlcuid.Query(sqlCases, pathCases);
-            dtTasks = exlcuid.Query(sqlTasks, pathTasks);
-            UpdateAccess(dtCases, CurrentDir+"MyData\\dataset.accdb", "select * from Cases");
-            UpdateAccess(dtTasks, CurrentDir+"MyData\\dataset.accdb", "select * from Tasks");
+            //string pathCases = CurrentDir+"MyData\\案件列表.xls";
+            //string pathTasks = CurrentDir+"MyData\\任务列表.xls";
+            //System.Data.DataTable dtCases = new System.Data.DataTable();
+            //System.Data.DataTable dtTasks = new System.Data.DataTable();
+            //AccessCUID acuid = new AccessCUID();
+            //ExcelCUID exlcuid = new ExcelCUID();
+            //acuid.Update("delete * from Tasks", CurrentDir+"MyData\\dataset.accdb");
+            //acuid.Update("delete * from Cases", CurrentDir+"MyData\\dataset.accdb");
+            //string sqlCases = "select * from [Sheet1$] order by 委案日期 desc";
+            //string sqlTasks = "select * from [Sheet1$] order by 配案日 desc";
+            ////string sqlTasks = "select * from [Sheet1$] where 承办人='" + UserName + "' order by 配案日 desc";
+            //dtCases = exlcuid.Query(sqlCases, pathCases);
+            //dtTasks = exlcuid.Query(sqlTasks, pathTasks);
+            //UpdateAccess(dtCases, CurrentDir+"MyData\\dataset.accdb", "select * from Cases");
+            //UpdateAccess(dtTasks, CurrentDir+"MyData\\dataset.accdb", "select * from Tasks");
             showWeight();
             MessageBox.Show("已刷新！");
         }
